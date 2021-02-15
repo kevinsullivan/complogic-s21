@@ -12,28 +12,35 @@ inductive Semantics : Type
 | four
 | five
 
-#reduce Semantics.one
+#reduce one           -- Visible only  in Semantics namespace
 
-open Semantics
+#reduce Semantics.one -- Qualified access to that namespace
+
+open Semantics        -- Open namespaces
 open Syntax
 
-#reduce one 
+#reduce one           -- Now defined in current namespace
 
 /-
-I --> one
-II --> two
-III --> three
-IV --> four
-V --> five
+Here's an informal definition of
+our desired semantics.
+
+I   -->   one
+II  -->   two
+III -->   three
+IV  -->   four
+V   -->   five
 -/
+
+-- We can formalize semantics as a function
 
 /-
 A little bit of Lean
 -/
 
--- Literal
--- Variable
--- Application
+-- Literal expressions
+-- Variable expressions
+-- Application expressions
 
 #reduce 1   -- literal
 
@@ -41,8 +48,8 @@ def x := 1  -- variable
 #reduce x
 
 def my_id : nat → nat := (λ n, n)   -- lambda expression, literal
-                                    -- type inference
---       T            V
+--  Ident   Type         Value
+                                    -- type inference in use
 
 #reduce (my_id 1)
 #reduce (my_id 4)
