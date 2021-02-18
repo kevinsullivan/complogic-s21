@@ -1,9 +1,8 @@
-/-
--/
+import .list
 
-#check list
-#print list
+namespace hidden
 
+-- list is polymorphic
 #check list nat         -- nat lives in Type
 #check list bool        -- bool lives in Type
 #check list Type        -- Type lives in Type 1
@@ -13,54 +12,99 @@
 Some lists of nats
 -/
 
-def lnat1 := list.nil   -- Can't infer elt type
-def lnat2 : list nat := list.nil  -- solution
-def lnat2 := @list.nil nat        -- solution
+#eval list.nil        -- can't infer α 
+#eval @list.nil nat   -- can't infer α 
+#eval (list.nil : list nat)
 
 /-
 Top-down (outside-in) refinement
 -/
-def lnat3 : list nat :=
+
+def lnat0 : list nat := list.nil 
+
+def lnat1 : list nat :=
   list.cons
     (_)
     (_)
 
--- List of strings
-
 def lstr1 : list string :=
   list.cons 
-    ("Hello")
+    (_)
     (list.cons
-      ("Lean!")
+      (_)
       (list.nil)
     )
+/-
+        cons
+        /  \
+      "hi" cons
+           /  \
+         "ho" ...
+-/
 
--- Lean notation
+-- FUNCTIONS
 
-def lstr1' := ["Hello", "Lean!"]
-
-#eval lstr1
-#eval lstr1'
-
-#check list.cons "Hello" ["Lean!"]
-#check "Hello"::["Lean!"]
-#check 1::[2,3,4,5]
-
-def head'' : Π { α : Type }, list α → option α 
-| α list.nil := none
-| α (list.cons h t) := some h
-
-def head' { α : Type } : list α → option α 
+def head { α : Type } : list α → option α 
 | list.nil := none
 | (list.cons h t) := some h
+
+def tail { α : Type } : list α → option (list α) 
+| list.nil := none
+| (list.cons h t) := some t
+
+-- recursive definition of length (by cases)
+def length {α : Type} : list α → nat
+| list.nil := 0 
+| (list.cons h t) := (_) + 1   -- length in context
+
+def append {α : Type} : list α → list α → list α
+| list.nil         m := _
+| (list.cons h t)  m := _
+
+def pure {α : Type} : α → list α 
+| a := list.cons a list.nil
+
+def reverse {α : Type} : list α → list α 
+| list.nil := list.nil
+| (list.cons h t) :=  _
+
+#eval reverse (list.cons 1 (list.cons 2 list.nil))
+
+end hidden
+
+/-
+From here on, we use Lean's identical
+definition of the list type, but we 
+gain the benefit of additional notation.
+-/
+
+/-
+NOTATION
+-/
+
+#eval list.cons "hi" (list.cons "ho" list.nil)
+#eval ["hi", "ho"]
+#eval list.cons "hi" ["ho"]
+#eval "hi"::["ho"]
+#eval 
+  let s : string :=
+    let a := ["hi","ho"] 
+    in 
+      (match a with 
+        | list.nil := "oops"
+        | (h::t) := h 
+      end) 
+  in s ++ "!"
+
+-- more examples
+#eval [1,2,3,4,5]
+#eval 1::[2,3,4,5]
+#eval 1::2::3::4::5::list.nil
+
 
 def head { α : Type } : list α → option α 
 | list.nil := none
 | (h::t) := some h
-
-def tail' { α : Type } : list α → option (list α) 
-| list.nil := none
-| (list.cons h t) := some t
 
 def tail { α : Type } : list α → option (list α) 
 | list.nil := none
@@ -69,30 +113,78 @@ def tail { α : Type } : list α → option (list α)
 -- recursive definition of length (by cases)
 def length {α : Type} : list α → nat
 | list.nil := 0 
-| (h::t) := 1 + (_)   -- length in context
+| (h::t) := (_) + 1   -- length in context
 
--- lambda abstraction syntax not recursive
-def length' {α : Type} : list α → nat :=
-λ l, 
-  _     -- length not in context
+#eval list.append ["Hi","Ho"] ["!"]
+#eval ["Hi","Ho"] ++ ["!"]
 
--- syntacic sugar for lambda, not recursive
-def length'' {α : Type} (l : list α) : nat :=
-match l with
-| list.nil := 0
-| (h::t) := 1 + _
-end
+#check @pure list
+#eval (pure 5 : list nat)
+#eval (pure 5 : option nat) -- whoa (later)
+
+def reverse {α : Type} : list α → list α 
+| list.nil := list.nil
+| (h::t) :=  _    -- use nice notation here
 
 universe u
 
-/-
-Define map over lists by case analysis
-and "structural recursion" on list argument
+/- 
+HIGHER ORDER FUNCTIONS
 -/
-def map_list {α β : Type u} : (α → β) → list α → list β 
-| f list.nil := list.nil
-| f (h::t) := (f h)::(_)
 
+/-
+Suppose we want to map a list of
+strings to a list of bools, where
+each bool is tt if the length of 
+the corresponding string is even,
+and false otherwise.
+-/
+
+def strlist := ["Hello", "There", "Lean"]
+
+def map_ev_string_bool :
+  list string →
+  list bool 
+| list.nil := list.nil
+| (h::t) := (h.length%2=0)::_
+
+def map_odd_string_bool :
+  list string →
+  list bool 
+| list.nil := list.nil
+| (h::t) := (h.length%2=1)::_
+
+def map_string_bang_string :
+  list string →
+  list string 
+| list.nil := list.nil
+| (h::t) := (h++"!")::(map_string_bang_string t)
+
+#eval map_string_bang_string strlist
+
+/-
+Dimensions of variation?
+-- argument list element type, α 
+-- result list element type, β 
+-- function used to transform α → β 
+-/
+def map_list {α β : Type u} : 
+    (α → β) → list α → list β 
+| f list.nil := list.nil
+| f (h::t) := (f h)::(map_list f t)
+
+#eval map_list 
+        (λ (s : string), s.length)
+        (strlist)
+
+#eval map_list 
+        (λ (s : string), (s.length%2=0:bool))
+        (strlist)
+
+def exclafy : list string → list string :=
+  map_list (λ (s : string), s++"!") -- arg
+
+#eval exclafy ["Whoa","That","Is","COOL"] 
 
 /-
 Define reduce, or fold, over a list. 
