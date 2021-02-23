@@ -24,29 +24,29 @@ Feb 2  | Formal Languages                                       |
 Feb 4  | Types and Functions                                    | HW #1 IDE Set-up
 Feb 9  | Polymorphic Type Builders                              |
 Feb 11 | Polymorphic Types and Type Universes                   | HW #1 Due, HW #2 Out (Polymorphic Types, Universes, Functions) 
-Feb 16 | Sum of Product Types (option, sum)                     | HW #3 Out (Recursive Types, Higher-Order Functions)
-Feb 18 | Recursive Types (nat, list)                            | HW #2 Due
-Feb 23 | Higher-Order Functions (filter, map, fold)             | HW #3 Due, HW #4 Out (Nat,List,HOFs)
-Feb 25 | Typeclasses (default, functor, monoid)                 |
-Mar 1  | Typeclasses (applicative, monad)                       | HW# #4 Due, HW #5 Out (Typeclasses)
-Mar 3  | Logic and Computation: Propositions as Types           |
-Mar 8  | Dependent Types (Π and Σ Types in full generality)     | HW #5 Due, HW #6 Out (Proofs I)
-Mar 10 | Inductive Families (Eq and Other Relations)            |
-Mar 15 | Predicate Logic and Proofs I                           | HW #6 Out, HW #7 Out (Proofs II)  
-Mar 17 | Predicate Logic and Proofs II                          |
-Mar 22 | Predicate Logic and Proofs III                         | HW #7 Due, Take-home EXAM out
+Feb 16 | Sum of Product Types (sum, option)                     | 
+Feb 18 | Recursive Types (nat, list)                            | HW #2 Due, HW #3 Out (Recursive Types and Functions)
+Feb 23 | Inductive Families, Dependent Types (Π, Σ; tuples)     | 
+Feb 25 | Propositions as Types: Identity (Equality), Testing    | HW #3 Due, HW #4 Out (Propositions as Types)
+Mar 1  | Propositions as Types: True, False, Implies, Not       | 
+Mar 3  | Propositions as Types: And, Or, Forall, Exists         | HW# #4 Due, HW #5 Out (Dependent Types)
+Mar 8  | Propositions as Types: Induction Principles            | 
+Mar 10 |                                                        | HW #5 Due, HW #6 Out (Proofs I)
+Mar 15 |                                                        |  
+Mar 17 |                                                        | HW #6 Out, HW #7 Out (EXAM REVIEW) 
+Mar 22 |                                                        | HW #7 Due, Take-home EXAM out
 Mar 24 | Expressions languages, operational semantics           | EXAM DUE, HW #8 Out (Proofs III) 
 Mar 29 | Imperative languages, Hoare logic                      | 
-Mar 31 |                                                        |
-Apr 1  |                                                        | 
+Mar 31 |                                                        | HW #8 DUE, HW #9 Out
+Apr 1  |   Higher-Order Functions I (compose, filter, map)                                                     | 
 Apr 6  |                                                        |
 Apr 8  |                                                        | 
 Apr 13 |                                                        |
 Apr 15 |                                                        | 
 Apr 20 | Type systems  (Tentative)                              |
-Apr 22 |                                                        | 
-Apr 27 |                                                        |
-Apr 29 |                                                        | 
+Apr 22 | Higher-Order Functions (fold, monoids)                                                       | 
+Apr 27 | Typeclasses I (default, has_map, monoids)                                                      |
+Apr 29 | Typeclasses II (applicative, monad)                                                      | 
 May 4  |                                                        |
 May 6  |  Lean 4                                                | 
 May 15 | EXAM 9AM-12PM or Takehome TBD                          |

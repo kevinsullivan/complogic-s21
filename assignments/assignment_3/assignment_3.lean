@@ -14,7 +14,6 @@ definition:
 
 -- ANSWER HERE
 
-
 /-
 2. Write a function, map_list_nat, that 
 takes as its arguments (1) a list, l, of 
@@ -25,7 +24,6 @@ applying f to each element of l. Make f
 the first argument and l the second. The
 function will work by case analysis and
 recursion on l.
-
 -/
 
 -- ANSWER HERE
@@ -217,5 +215,4 @@ universe variable for the list problem.
 -/
 
 -- ANSWER HERE
-
 
