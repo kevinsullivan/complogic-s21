@@ -14,7 +14,7 @@ tt value in the list.
 
 /-
 2.  Write a polymorphic function, allSatisfy, 
-that takes a a predicate function, p, of type 
+that takes a predicate function, p, of type 
 α → bool, and list of values of type α (a type
 parameter), and and that returns true (tt) if 
 and only if for every value, v, in the list, 
@@ -57,7 +57,7 @@ For example, reduce ["Hello", " ", "Lean!"] to
 -/
 
 /-
-5. Re-implement here your helpder functions from
+5. Re-implement here your helper functions from
 questions 1 and 2 using simple_fold_list.
 -/
 
@@ -146,6 +146,8 @@ can complete the preceding three definitions if you
 replace ev by odd.
 -/
 
+inductive empty' : Type
+
 /-
 7. As you know, the type, empty, is uninhabited.
 That is, it has no values. So what does it tell
@@ -167,17 +169,11 @@ question at the beginning of this problem.
 -/
 
 def foo : ev 1 → empty :=
-λ (e : ev 1),
-  _
-
-def bar : ev 3 → empty :=
-_
-
-def baz : ev 5 → empty :=
-_
+λ (e : ev 1), _ -- match ... with ... end
+  -- for every possible form of e, return a value of type empty
 
 /- 8. Define evdp to be a sigma (dependent 
-pair) type, avalue of which has a natural
+pair) type, a value of which has a natural
 number, n,  as its first component, and a 
 value of type, ev n, as its second. Then 
 define evp0, evp2, and evp4 to be values
@@ -185,10 +181,13 @@ of this type, whose first elements are,
 respectively, 0, 2, and 4.
 -/
 
+-- hint
+#check Σ (n : nat), ev n
+
 -- Your answers here
 
 /- 9. Write a function, mkEvp, that takes 
-a argument, n, of type nat, implicitly, and 
+a argument, mn, of type nat, iplicitly, and 
 an argument, nEv ot type, ev n, and that 
 returns a value of type evdp (from the last
 problem). Then briefly answer the question, 
@@ -197,3 +196,4 @@ function type?
 -/
 
 -- Your answers here
+
