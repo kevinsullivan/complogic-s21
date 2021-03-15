@@ -1,8 +1,9 @@
-import .has_mul
+import .has_one
 
+namespace hidden
 
 -- Overload has_mul_ident for nat
-instance ident_nat : has_mul nat := ⟨ nat.mul ⟩
+instance has_one_nat : has_one nat := ⟨ 1, sorry, sorry ⟩
 /-
 Again this code would typically go in the module
 that defines the nat type, as here we define an
@@ -15,13 +16,8 @@ we can use typeclass inference to find the instance,
 n, of the has_mul_id typeclass for the nat type and
 use it to return a satisfactory answer. 
 -/
-def natMul [n : has_mul nat] := n.mul
-/-
-To use a typeclass, use it an an implement value
-parameter in a function definition. Than you can
-access all fields of the instances structure to get
-the associated data (here a binary function).
--/
+def getMeANat [n : has_one nat] : nat := n.one
 
--- smoke test
-#eval natMul 2 3
+#eval getMeANat
+
+end hidden
