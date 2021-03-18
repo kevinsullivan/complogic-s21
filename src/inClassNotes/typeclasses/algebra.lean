@@ -128,7 +128,17 @@ instance add_monoid_nat : add_monoid nat := ⟨ _ , _ ⟩
 So what good can all of this be? Here's one application.
 We've noted that arguments to foldr can be inconsistent. The
 wrong identity element can be passed for the given operator.
+-/
 
+
+def foldr {α : Type} : (α → α → α) → α → list α → α 
+| f id [] := id    
+| f id (h::t) := f h (foldr f id t)
+
+#eval foldr nat.mul 0 [1,2,3,4,5]   -- oops!
+
+
+/-
 A better foldr takes a "certified" monoid as an argument.
 A monoid bundles an operator with its identity element, so
 they can't get out of synch. By "certified,"" we mean that 
@@ -182,10 +192,10 @@ The group, D4.
 -/
 
 inductive dihedral_4 : Type
-| r0  -- 0 quarter turns    r: rotation
-| r1    -- 1 quarter turn
-| r2    -- 2 quarter turns
-| r3    -- 3 quarter turns
+| r0     -- 0 quarter turns    r: rotation
+| r1     -- 1 quarter turn
+| r2     -- 2 quarter turns
+| r3     -- 3 quarter turns
 | sr0    -- flip horizontal   s: reflection
 | sr1    -- flip ne/sw
 | sr2    -- flip vertical
