@@ -20,6 +20,10 @@ inductive eq_day : day → day → Prop
 | eq_day_sa : eq_day sa sa
 | eq_day_su : eq_day su su 
 
+/-
+eq_day = { (mo,mo), (tu,tu), ..., (su,su) }
+-/
+
 
 
 open eq_day
@@ -73,7 +77,7 @@ lemma bad_mondays' : always_rains_on' mo := mo_rainy' mo eq_day_mo
 As an aside you can of course use tactic mode.
 -/
 
-lemma bad_mondays'' : always_rains_on' mo := 
+lemma bad_mondays'' : always_rains_on' mo := /- term -/
 begin
 apply mo_rainy' _ _,
 exact eq_day_mo,
@@ -124,15 +128,15 @@ The final trick is that there is just
 one constructor for eq, called "refl"
 (generally written eq.refl) that takes  
 *one* argument, a : α, and constructs
-a value of type (eq a a), which we take
-to be a proof of equality. The upshot
-is that you can generate a proof that
+a value of type (eq a a), aka a=a, which
+we take to be a proof of equality. The 
+upshot is that you can generate a proof that
 any value of any type is equal to itself
 and there is no way to create a proof of
 any other equality. 
 -/
 
-#check eq
+#check @eq
 
 /-
 Here's Lean's exact definition of the
@@ -146,6 +150,7 @@ you get exacty the relation you want!
 namespace eql
 
 universe u
+
 inductive eq {α : Sort u} (a : α) : α → Prop
 | refl [] : eq a  -- skip notation for now
 
@@ -166,8 +171,8 @@ Moreover, Lean reduces arguments to calls
 so you can use eq.refl to construct proofs
 of propositions such as 1 + 1 = 2.
 -/
-example : 1 + 1 = 2 := _
-example : "Hello, " ++ "Lean!" = "Hello, Lean!" := _
+example : 1 + 1 = 2 := eq.refl 2
+example : "Hello, " ++ "Lean!" = "Hello, Lean!" := eq.refl "Hello, Lean!"
 
 /-
 By the way, "example", is like def, lemma
@@ -211,7 +216,34 @@ Properties of equality
 An equivalence relation
 -/
 
+#check eq.refl
+#check eq.symm
 #check eq.trans
 #check @eq.rec
 
 
+
+
+inductive ev : ℕ → Prop
+| ev_0 : ev 0
+| ev_ss : ∀ (n : ℕ), ev n → ev (n+2) 
+
+open ev
+
+lemma zero_even : ev 0 := ev_0
+lemma two_even : ev 2 := ev_ss 0 ev_0
+lemma four_even : ev 4 := ev_ss 2 two_even
+
+lemma four_even' : ev 4 := 
+  ev_ss   -- emphasizes recursive structure of proof term
+    2 
+    (ev_ss
+      0
+      ev_0 
+    )
+
+lemma five_hundred_even : ev 500 :=
+begin
+  repeat { apply ev_ss },
+  _
+end

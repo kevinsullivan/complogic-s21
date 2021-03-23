@@ -1,5 +1,7 @@
+import .field_rename
 import ...inClassNotes.typeclasses.functor
 import ...inClassNotes.typeclasses.algebra
+import data.real.basic
 
 /-
 Copy this file to where you want to work on 
@@ -20,6 +22,24 @@ expresses the claim that the integers (ℤ or
 the required proofs with *sorry*. 
 -/
 
+open alg 
+
+set_option old_structure_cmd true
+
+universe u
+
+class has_ring (α : Type u) 
+  extends alg.add_comm_group α, mul_monoid α :=
+(dist_left : ∀ (a b c : α), 
+  mul_groupoid.mul a (add_groupoid.add b c) = 
+  add_groupoid.add (mul_groupoid.mul a b) (mul_groupoid.mul a c))
+(dist_right : ∀ (a b c : α), 
+  mul_groupoid.mul (add_groupoid.add b c) a = 
+  add_groupoid.add (mul_groupoid.mul b a) (mul_groupoid.mul c a))
+
+axioms (T : Type) (t_add : T → T → T) (t_mul : T → T → T)
+
+
 /-
 2. Go learn what an algebraic *field* is, then
 define a typeclass to formalize its definition,
@@ -30,6 +50,11 @@ may (and should) stub out the proof fields in
 your instances using sorry.
 -/
 
+class has_field (α : Type u) extends has_ring α, mul_monoid α :=
+(mul_comm : ∀ (a b : α), mul_groupoid.mul a b = mul_groupoid.mul b a )
+(mul_inv : ∀ (a : α), (a ≠ alg.has_zero.zero) → ∃ (ainv : α), mul_groupoid.mul a ainv = alg.has_one.one)
+
+instance has_field_rat : has_field ℚ := _
 
 /-
 3. Graduate students required. Undergrads extra
@@ -66,8 +91,8 @@ you need to multiply, using your mul function.
 -/
 
 def add : nat → nat → nat
-| 0 m         := _
-| (n' + 1) m  := _
+| 0 m         := m
+| (n' + 1) m  := nat.succ (add n' m)
 
 def mul : nat → nat → nat
 | 0 m         := _
@@ -110,8 +135,6 @@ Use both our mul_monoid_foldr and fmap
 functions to implement your solution.
 -/
 
-open alg
-
 -- Your answer here
 
 
@@ -141,7 +164,8 @@ easier.
 
 inductive nat_eql: nat → nat → Type
 | zeros_equal : nat_eql 0 0
-| n_succ_m_succ_equal : Π {n m : nat}, _
+| n_succ_m_succ_equal : Π {n m : nat}, 
+    nat_eql n m → _
 
 /-
 B. Now either complete the following programs
@@ -274,3 +298,14 @@ aka, composed, automatically?
 -/
 
 --  Good job!
+
+example : 1 = 1 := 
+begin
+  exact (eq.refl 1),
+end
+
+example : 1 = 1 := 
+begin
+  apply eq.refl _,
+end
+

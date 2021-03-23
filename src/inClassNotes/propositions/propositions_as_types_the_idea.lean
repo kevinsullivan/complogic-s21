@@ -3,14 +3,6 @@ Propositions as types: the very idea.
 -/
 
 /-
-Prop        Sort 0
-Type 0      Sort 1
-Type 1      Sort 2
-Type 2      Sort 3       
-...         ...
--/
-
-/-
 Idea #1. Use types to represent
 logical propositions and values of
 these types to represent "evidence" 
@@ -44,7 +36,7 @@ of Lean's type universes, which we
 now introduce: Prop. 
 -/
 
-inductive its_raining : Prop
+inductive its_raining : Prop  -- not quite right
 | i_see_rain_falling : its_raining
 | i_hear_rain_on_roof : its_raining
 
@@ -54,34 +46,39 @@ inductive streets_wet : Prop
 
 open its_raining streets_wet
 
-def proof_1'' : its_raining := _
-def proof_2'' : its_raining := _
+def proof_1'' : its_raining := i_see_rain_falling
+def proof_2'' : its_raining := i_hear_rain_on_roof
 
-lemma proof_1' : its_raining := _
-lemma proof_2' : its_raining := _
+lemma proof_1' : its_raining := i_see_rain_falling
+lemma proof_2' : its_raining := i_hear_rain_on_roof
 
-theorem proof_1 : its_raining := _
-theorem proof_2 : its_raining := _
+theorem proof_1 : its_raining := i_see_rain_falling
+theorem proof_2 : its_raining := i_hear_rain_on_roof
 
 /-
 We just don't care which value of a
-propositional type is used. When we 
-see *equality* we'll find that values
+propositional type is used. Values
 build by different constructors in 
-Sort n, for n > 0, are always NOT
-equal, whereas all values of a type
-in Sort 0, or Prop, are deemed equal.
-Because different proof terms are
-equivalent, they carry no information
-beyond being evidence of truth. This
-is the principle of proof irrelevance.
+Type n, are always NOT equal. This 
+is the idea that "constructors are
+injective and disjoint."
 -/
+
+/-
+Prop        Sort 0
+Type 0      Sort 1
+Type 1      Sort 2
+Type 2      Sort 3       
+...         ...
+-/
+
+-- Change Type to Prop above!
 
 /-
 Just as we can represent propositions
 as types, we can represent *predicates*
-as type families, i.e., propositions
-with parameters.
+as type families indexed by arguments, 
+i.e., as "propositions with parameters."
 -/
 
 inductive day : Type 
@@ -91,26 +88,27 @@ open day
 
 /-
 A type family indexed by day representing
-the predicate ⟨ always_rains_on d ⟩, where
+the predicate ⟨ is_always_rainy d ⟩, where
 d is a parameter of type day. Providing a
 value for d yields a specific proposition
 in the family of propositions we've defined, 
 namely one claims that a specific day, d, is
 always rainy. 
 -/
-inductive always_rains_on : day → Prop
-| mo_rainy : ∀ (d : day), (d = mo) → always_rains_on d
 
-open always_rains_on
+inductive is_always_rainy : day → Sort 0
+| mo_rainy : ∀ (d :day), (d = mo) → is_always_rainy d
 
-#check always_rains_on
-#check always_rains_on su
-#check always_rains_on mo
-#check always_rains_on tu
+open is_always_rainy
+
+#check is_always_rainy
+#check is_always_rainy su
+#check is_always_rainy mo
+#check is_always_rainy tu
 
 
 
-lemma bad_tuesdays : always_rains_on tu := _  -- stuck
-lemma bad_fridays : always_rains_on tu := _   -- stuck
-lemma bad_mondays : always_rains_on mo := mo_rainy mo _
+lemma bad_tuesdays : is_always_rainy tu := mo_rainy _ _ -- stuck
+lemma bad_fridays : is_always_rainy fr := mo_rainy _ _    -- stuck
+lemma bad_mondays : is_always_rainy mo := mo_rainy mo (eq.refl mo)
 
