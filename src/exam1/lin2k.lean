@@ -13,7 +13,7 @@ Ground rules are as follows:
 The exam is due before midnight on Friday, Apr 2.
 
 Read the following and follow the instructions. 
-Submit your completed lin2K_test.lean file. That's it!
+Submit your completed lin2K_test.lean file. That's it!B
 -/
 
 /-

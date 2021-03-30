@@ -17,6 +17,7 @@ inductive Semantics : Type
 #reduce Semantics.one -- Qualified access to that namespace
 
 open Semantics        -- Open namespaces
+
 open Syntax
 
 #reduce one           -- Now defined in current namespace
