@@ -1,5 +1,3 @@
-
-
 /-
 Properties and Relations: Type Families
 -/
@@ -8,8 +6,10 @@ Properties and Relations: Type Families
 
 --  Π {α : Sort u_1}, α → α → Prop
 
-#check eq 1 0
-#check eq 1 1
+#check eq 1 0 -- 1 = 0
+#check eq 1 1 -- 1 = 1
+#check 1 = 1
+
 
 /-
 Introduction: construct a term
@@ -40,29 +40,27 @@ axioms  -- some assumptions we can work with
 
 -- write proof term
 example : livesInCville Robert := 
-  _
+  eq.subst keqr klic
 
-
--- use eq.subst
-example : livesInCville Robert :=
-begin
-  _
-end
 
 -- use rw tactic
 example : livesInCville Robert :=
 begin
-  _
+  apply eq.subst,
+  exact keqr,
+  exact klic,
 end
 
 universe u
 theorem eq_is_symm : ∀ {α : Sort u} (a b : α), a = b → b = a :=
 begin
-  _
+  assume α a b,
+  assume h,
+  rw h,
 end
 
 theorem eq_is_symm' : ∀ {α : Sort u} (a b : α), a = b → b = a :=
-  _
+  λ α a b h, eq.subst h (eq.refl a)
 
 #check @eq.symm
 
@@ -70,12 +68,16 @@ theorem eq_is_symm' : ∀ {α : Sort u} (a b : α), a = b → b = a :=
 theorem eq_is_trans : 
   ∀ {α : Sort u} (a b c : α), a = b → b = c → a = c :=
 begin
-_
+  intros α a b c ab bc, 
+  rw ab,
+  assumption,
 end
 
 -- HW: prove eq_is_trans by writing a proof term explicitly
 
 #check @equivalence
+
+-- Π {β : Sort u_1}, (β → β → Prop) → Prop
 
 /-
 section relation
@@ -90,7 +92,7 @@ def transitive := ∀ ⦃x y z⦄, x ≺ y → y ≺ z → x ≺ z
 
 def equivalence := reflexive r ∧ symmetric r ∧ transitive r
 
-def total := ∀ x y, x ≺ y ∨ y ≺ x
+def total := ∀ x y, x ≺ y ∨ y ≺ x   -- not the "total" we've used for functions
 
 def mk_equivalence (rfl : reflexive r) (symm : symmetric r) (trans : transitive r) : equivalence r :=
 ⟨rfl, symm, trans⟩
@@ -120,4 +122,15 @@ end relation
 
 theorem eq_is_equiv : ∀ (α : Sort u), equivalence (@eq α)  := 
 begin
+  assume α,
+  unfold equivalence,
+  apply and.intro _ _,
+  exact eq.refl,
+  apply and.intro _ _,
+  unfold symmetric,
+  intros x y xy,
+  rw xy,
+  unfold transitive,
+  _
+
 end
