@@ -12,7 +12,6 @@ inductive Semantics : Type
 | four
 | five
 
-#reduce one           -- Visible only  in Semantics namespace
 
 #reduce Semantics.one -- Qualified access to that namespace
 
@@ -94,3 +93,6 @@ def my_eval : Syntax → Semantics
 | V := five
 
 #reduce my_eval II 
+
+-- computational: def c_semantics_fun  : input -> c-program -> output
+-- logical:       def c_semantics_pred : input -> c-program -> output -> Prop

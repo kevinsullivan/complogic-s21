@@ -21,7 +21,7 @@ The elimination rule for false is very
 important.
 -/
 
-theorem false_elim' : ∀ (P : Prop), false → P :=
+theorem false_elim' : ∀ (P : Prop), false → P :=    -- false elimination
 λ P f, 
   match f with
   end
@@ -35,7 +35,7 @@ lemma false_imp_false : false → false := false_imp_anything false
 lemma false_imp_true : false → true := false_imp_anything true
 
 -- trick question
-lemma true_imp_false : true → false := λ t, _   
+lemma true_imp_false : true → false := λ t, _   -- stuck 
 
 /-
 As expected from propositional logic
@@ -43,7 +43,7 @@ As expected from propositional logic
 true → true   is true
 true → false  is false
 false → true  is true
-false → false is false
+false → false is true
 -/
 
 

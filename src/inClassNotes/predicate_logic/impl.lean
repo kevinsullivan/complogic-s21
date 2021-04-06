@@ -23,8 +23,8 @@ of type ∀ (p : P), Q, which is notation for
 function type, P → Q. It all makes sense! 
 -/
 
-lemma and_commutes' : ∀ (P Q : Prop), P ∧ Q → Q ∧ P :=
-λ h, _
+lemma and_commutes' : ∀ {P Q : Prop}, P ∧ Q → Q ∧ P :=
+λ P Q, λ h, and.intro (h.right) (h.left) 
 
 /-
 This is the introduction rule for →. Assume 
@@ -33,6 +33,9 @@ this case) and show that in that context
 there is a proof of the conclusion (Q ∧ P).
 -/
 
+/-
+Elimination
+-/
 axioms (Person : Type) (fromCville : Person → Prop)
 axioms (Kevin Liu : Person) (kfc : fromCville Kevin) (lfc : fromCville Liu)
 
@@ -44,5 +47,5 @@ theorem bfc : fromCville Kevin ∧ fromCville Liu := and.intro kfc lfc
 
 -- now we can *apply* and_commutes' to derive a proof of (Q ∧ P)
 
-#check and_commutes' (fromCville Kevin) (fromCville Liu) bfc
-#reduce and_commutes' (fromCville Kevin) (fromCville Liu) bfc
+#check and_commutes' bfc
+#reduce and_commutes' bfc

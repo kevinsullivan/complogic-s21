@@ -19,12 +19,13 @@ proposition in Lean: write a function.
 
 #check ∀ (n : nat), n = n
 
-lemma all1 : ∀ (n : nat), n = n :=
-λ n, _        
+lemma all1 : ∀ (n : nat), n = n := λ n, (eq.refl n)       
 
-lemma all2 (n : nat) : n = n :=
-_ 
+lemma all2 (n : nat) : n = n := rfl
 
+#check ∀ (n : nat), n = n 
+
+-- Introduction rule for forall 
 
 /-
 Now *given* a proof of a forall, you
@@ -39,6 +40,19 @@ rule for ∀.
 -/
 
 example : 5 = 5 := all1 5
+
+#check all1 5
+
+axioms  (Person : Type) 
+        (Friendly : Person → Prop) 
+        (allFriendly : ∀ (p : Person), Friendly p)
+        (John : Person)
+
+example : Friendly John := allFriendly John
+
+/-
+Proofs are just "programs" -- functions, data structures
+-/
 
 
 

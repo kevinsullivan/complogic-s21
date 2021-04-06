@@ -16,14 +16,14 @@ inductive true : Prop
 /-
 Introduction rule for true
 -/
-lemma true_is_true : true := _
+lemma true_is_true : true := true.intro
 
 
 /-
 A function from true to true
 -/
-def true_to_true' : true → true := 
-λ t, t
+lemma true_to_true' : true → true := 
+λ (t : true), t
 
 
 /-
