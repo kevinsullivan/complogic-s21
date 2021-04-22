@@ -1,4 +1,5 @@
 import algebra.module.basic
+import data.real.basic
 
 /-
 This is EXAM #1 for UVa CS 4501/6501, Spring
@@ -182,7 +183,7 @@ class mul_action (α : Type u) (β : Type v) [monoid α] extends has_scalar α �
 (one_smul : ∀ b : β, (1 : α) • b = b)
 (mul_smul : ∀ (x y : α) (b : β), (x * y) • b = x • y • b)
 -/
-lemma one_smul_l2 : ∀ v : K × K, (1 : K) • v = v := sorry
+lemma one_smul_l2  {K : Type u} [field K] [inhabited K] : ∀ v : K × K, (1 : K) • v = v := sorry
 lemma mul_smul_l2 : ∀ (x y : K) (b : K × K), (x * y) • b = x • y • b := sorry
 instance : mul_action K (K × K) := ⟨ one_smul_l2, mul_smul_l2 ⟩ 
 
