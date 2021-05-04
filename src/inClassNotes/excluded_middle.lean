@@ -152,3 +152,40 @@ it contains no proof/evidence either way but only says that one
 of them must be true. 
 -/
 #check classical.em
+
+
+theorem neg_elim : ∀ (P : Prop), ¬¬P → P :=
+begin
+  assume P h,
+  /-
+  (¬ P -> false)
+  ((P → false) → false)
+  P?
+  -/
+  have ponp := classical.em P,
+  cases ponp,
+  assumption,
+  contradiction,
+end
+
+/-
+DeMorgan's laws
+¬ (P ∧ Q) ↔ (¬P ∨ ¬Q)
+¬ (P ∨ Q) ↔ (¬P ∧ ¬Q)
+-/
+
+theorem dm1 : ∀ (P Q : Prop), ¬(P ∧ Q) ↔ (¬P ∨ ¬Q) := 
+begin
+  intros,
+  split,
+  -- forward
+  assume h,
+  -- have: P ∧ Q → false
+  
+end
+
+theorem dm2 : ∀ (P Q : Prop), ¬ (P ∨ Q) ↔ (¬P ∧ ¬Q) := 
+begin
+end
+
+
