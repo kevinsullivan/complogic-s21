@@ -1,7 +1,6 @@
 import .arith_expr
 import .bool_expr
 
-
 /- 
 Syntax of our little language (OLL).
 OLL supports mutable variables and
@@ -30,7 +29,7 @@ notation `WHILE ` b ` DO ` c ` END`:= while b c
 /-
 Computational semantics
 -/
-def c_eval : cmd → env → env
+meta def c_eval : cmd → env → env
 | skip st := st
 | (b_assn v e) st  := override_bool st v e
 | (a_assn v e) st  := override_nat st v e
@@ -97,7 +96,6 @@ inductive c_sem : cmd → env → env → Prop
     bool_eval b pre = tt → 
     c_sem c1 pre post → 
     c_sem (IF b THEN c1 ELSE c2) pre post
-    -- NEW
 
   -- c_sem (while false do c) pre post
   | c_sem_while_false :
